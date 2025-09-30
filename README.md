@@ -11,6 +11,8 @@ Pipeline completo: Dados -> Transformação -> Automação -> Inferência com mo
 | 3 | Automação | CLI, logging estruturado, testes | Comando `run_insight` funcional |
 | 4 | Modelos Pré-Treinados | Uso de `transformers`, insight textual | Insight salvo em JSON |
 
+Ver exercícios detalhados em: [EXERCICIOS.md](EXERCICIOS.md)
+
 ## Requisitos
 
 - Python >= 3.11 (ideal 3.13 se disponível)
@@ -19,17 +21,28 @@ Pipeline completo: Dados -> Transformação -> Automação -> Inferência com mo
 
 ## Instalação
 
+Usando `pyproject.toml` (pip moderno >= 23 suporta):
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install --upgrade pip
+pip install .[dev]
+```
+Ou somente dependências principais:
+```bash
+pip install .
 ```
 
 ## Execução Rápida
 
+Via módulo instalado (entry point script):
+```bash
+run-insight --limit 50 --model distilgpt2
+cat outputs/insight.json
+```
+Ou diretamente:
 ```bash
 python scripts/run_insight.py --limit 50 --model distilgpt2
-cat outputs/insight.json
 ```
 
 ## Estrutura
@@ -52,6 +65,8 @@ scripts/
 tests/
   test_stats.py            # Teste unitário exemplo
 outputs/                   # Gerado em runtime
+EXERCICIOS.md              # Lista de exercícios por bloco
+pyproject.toml             # Metadados e dependências
 ```
 
 ## Fluxo do Pipeline
@@ -64,20 +79,21 @@ outputs/                   # Gerado em runtime
 ## Ajustando Modelo
 Alterar via argumento CLI:
 ```bash
-python scripts/run_insight.py --model distilbert-base-multilingual-cased
+run-insight --model distilbert-base-multilingual-cased
 ```
 (Para outras tasks ajuste o código em `inference.py` trocando o tipo de pipeline.)
 
 ## Testes
 
 ```bash
-pytest -q
+pytest
 ```
 
 ## Extensões Sugeridas
 - Adicionar caching de modelo
 - Guardar hash do dataset
 - Validar repetição de n-gramas (funções em `evaluation.py`)
+- Adicionar métricas de timing no JSON final (`timings`)
 
 ## Métricas e Qualidade
 | Dimensão | Meta |
@@ -87,6 +103,7 @@ pytest -q
 | Performance | Sem loops Python desnecessários |
 | Segurança | Sem segredos hardcoded |
 | Reprodutibilidade | Versões registradas no JSON final |
+| Observabilidade | Logs de etapas principais |
 
 ## Licença
 MIT
