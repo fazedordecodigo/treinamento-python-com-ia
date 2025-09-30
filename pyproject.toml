@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=69.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "treinamento-python-com-ia"
+version = "0.1.0"
+description = "Material de treinamento 4h: pipeline de dados a inferência com transformers"
+authors = [
+  { name = "Instrutor", email = "instrutor@example.com" }
+]
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+keywords = ["python", "ia", "treinamento", "transformers", "pandas", "numpy"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "License :: OSI Approved :: MIT License",
+  "Intended Audience :: Developers",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+# Dependências principais (pin leve para reprodutibilidade sem travar patch)
+# Ajuste conforme necessidade em produção.
+[project.dependencies]
+numpy = ">=2.3,<2.4"
+pandas = ">=2.3,<2.4"
+SQLAlchemy = ">=2.0,<2.1"
+transformers = ">=4.44,<4.45"
+huggingface-hub = ">=0.24,<0.25"
+python-dotenv = ">=1.0,<2.0"
+rich = ">=13.7,<14.0"
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.2,<9.0",
+  "mypy>=1.10,<1.999",
+  "types-requests",
+  "ruff>=0.6.0,<0.7.0"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+addopts = "-q"
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_ignores = true
+strict_optional = true
+ignore_missing_imports = true
+
+[tool.ruff]
+line-length = 100
+select = ["E", "F", "I", "UP", "N", "B"]
+ignore = ["E501"]
+
+[project.scripts]
+run-insight = "automation.cli:main"
